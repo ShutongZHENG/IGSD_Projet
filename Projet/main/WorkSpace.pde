@@ -10,7 +10,7 @@ public class WorkSpace {
     this.grid.noFill(); 
     this.grid.stroke(0x77836C3D); 
     this.grid.strokeWeight(0.5f); 
-    // INSÉREZ VOTRE CODE ICI
+     
 
    
     for( int i = 0-(nombre/100/2); i<nombre/100/2;i++){

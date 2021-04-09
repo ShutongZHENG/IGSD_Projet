@@ -28,7 +28,7 @@ public class Land {
     this.shadow.beginShape(QUADS);
     this.shadow.fill(0x992F2F2F);
     this.shadow.noStroke();
-    // INSÉREZ VOTRE CODE ICI
+     
 
     Map3D.ObjectPoint onw = this.map.new ObjectPoint(-w/2.0f, -h/2.0f);
     Map3D.ObjectPoint osw = this.map.new ObjectPoint(-w/2.0f, +h/2.0f);
@@ -45,7 +45,7 @@ public class Land {
     this.wireFrame.noFill();
     this.wireFrame.stroke(#888888);
     this.wireFrame.strokeWeight(0.5f);
-    // INSÉREZ VOTRE CODE ICI
+     
 
     for ( float i = -w/2.0f; i< +w/2.0f; i+=tileSize) {
       for ( float j = -h/2.0f; j< +h/2.0f; j+=tileSize) {
@@ -73,7 +73,7 @@ public class Land {
     this.satellite.texture(uvmap);
     this.satellite.noStroke();
     this.satellite.emissive(0xD0);
-    // INSÉREZ VOTRE CODE ICI
+     
     for ( float i = -w/2.0f; i< +w/2.0f; i+=tileSize) {
       for ( float j = -h/2.0f; j< +h/2.0f; j+=tileSize) {
 

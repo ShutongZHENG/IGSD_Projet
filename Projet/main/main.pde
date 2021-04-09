@@ -39,23 +39,23 @@ void keyPressed() {
   if (key == CODED) {
     switch (keyCode) {
     case UP:
-      // INSÉREZ VOTRE CODE ICI
+       
 
 
       m_camera.adjustColatitude(-PI/180);
       break;
     case DOWN:
-      // INSÉREZ VOTRE CODE ICI
+       
 
       m_camera.adjustColatitude(PI/180);
       break;
     case LEFT:
-      // INSÉREZ VOTRE CODE ICI
+       
 
       m_camera.adjustLongitude(-PI/180);
       break;
     case RIGHT:
-      // INSÉREZ VOTRE CODE ICI
+       
 
       m_camera.adjustLongitude(PI/180);
 
@@ -64,12 +64,12 @@ void keyPressed() {
   } else {
     switch (key) {
     case '+':
-      // INSÉREZ VOTRE CODE ICI
+       
       m_camera.adjustRadius(250.);
 
       break;
     case '-':
-      // INSÉREZ VOTRE CODE ICI
+       
       m_camera.adjustRadius(-250.);
 
       break;
@@ -100,7 +100,7 @@ void keyPressed() {
 
 void mouseWheel(MouseEvent event) {
   float ec = event.getCount();
-  // INSÉREZ VOTRE CODE ICI
+   
   m_camera.adjustRadius(-250. * ec);
 }
 
@@ -108,11 +108,11 @@ void mouseDragged() {
   if (mouseButton == CENTER) {
     // Camera Horizontal
     float dx = mouseX - pmouseX;
-    // INSÉREZ VOTRE CODE ICI
+     
     m_camera.adjustLongitude(dx*PI/180);
     // Camera Vertical
     float dy = mouseY - pmouseY;
-    // INSÉREZ VOTRE CODE ICI
+     
     m_camera.adjustColatitude(dy*PI/180);
   }
 }
