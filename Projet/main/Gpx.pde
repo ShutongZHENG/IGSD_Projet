@@ -1,4 +1,4 @@
-public class Gpx { //<>//
+public class Gpx { //<>// //<>// //<>//
   private Map3D map;
   private String fileName;
   private PShape track; // beginshape lines

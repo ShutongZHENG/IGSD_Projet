@@ -11,7 +11,8 @@ public class Hud {
     g.hint(PConstants.DISABLE_DEPTH_TEST);
     g.resetMatrix();
     g.applyMatrix(this.hud);
-  }
+    
+}
   private void end() {
     g.hint(PConstants.ENABLE_DEPTH_TEST);
     g.popMatrix();

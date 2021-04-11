@@ -98,16 +98,7 @@ public class Land {
          PVector n4 = op4.toNormal();
         this.satellite.normal(n4.x, n4.y, n4.z);
         this.satellite.vertex(op4.x, op4.y, op4.z, (i+w/2.0f)*uvmap.width/w, ((j+h/2.0f)+tileSize)*uvmap.height/h);
-  
 
-//        Map3D.ObjectPoint pone = this.map.new ObjectPoint(i, j);
-//        Map3D.ObjectPoint ptwo = this.map.new ObjectPoint(i+tileSize, j);
-//        Map3D.ObjectPoint pthree = this.map.new ObjectPoint(i+tileSize, j+tileSize);
-//        Map3D.ObjectPoint pfour = this.map.new ObjectPoint(i, j+tileSize);
-//        this.satellite.vertex(pone.x, pone.y, pone.z, (i+w/2.0f)*uvmap.width/w, (j+h/2.0f)*uvmap.height/h);
-//        this.satellite.vertex(ptwo.x, ptwo.y, ptwo.z, ((i+w/2.0f)+tileSize)*uvmap.width/w, (j+h/2.0f)*uvmap.height/h);
-//        this.satellite.vertex(pthree.x, pthree.y, pthree.z, ((i+w/2.0f)+tileSize)*uvmap.width/w, ((j+h/2.0f)+tileSize)*uvmap.height/h);
-//        this.satellite.vertex(pfour.x, pfour.y, pfour.z, (i+w/2.0f)*uvmap.width/w, ((j+h/2.0f)+tileSize)*uvmap.height/h);
       
     
   }

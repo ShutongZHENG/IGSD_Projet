@@ -1,4 +1,4 @@
-/** //<>//
+/** //<>// //<>// //<>//
  * Map3D Class
  * @version  1.0.0
  * @author   Yves BLAKE (2021/Jan/30)
@@ -74,7 +74,7 @@ public class Map3D {
     this.data = loadBytes(fileName);
     
     // Force flat projection if false (for debug purposes)
-    this.mode3D = true;
+    this.mode3D = false;
 
   }
 
