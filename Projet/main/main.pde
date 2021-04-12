@@ -7,19 +7,23 @@ Gpx gpx;
 Railways railways;
 Roads roads;
 Buildings buildings;
+Poi poi;
 boolean ready;
 void setup() {
   this.ready = false;
   fullScreen(P3D);
   this.map = new Map3D("paris_saclay.data");
+  this.poi = new Poi(this.map);
+  this.poi.getPoints("heatmap_1.geojson");
+  this.poi.getPoints("heatmap_2.geojson");
   thread("prepare");
   this.land = new Land(this.map, "paris_saclay.png");
   this.hud = new Hud();
   this.gpx = new Gpx(this.map, "trail.geojson" );
   this.railways = new Railways(this.map, "railways.geojson");
   this.roads = new Roads(this.map, "roads.geojson");
-
-
+  
+  this.poi.drawShape();
   smooth(8);
   frameRate(60);
   background(0x40);
@@ -48,7 +52,9 @@ void draw() {
     this.roads.update();
     land.update();
     this.buildings.update();
+    this.poi.update();
     hud.update(m_camera);
+    
   }
 }
 

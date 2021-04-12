@@ -45,7 +45,7 @@ public class Land {
     this.wireFrame.noFill();
     this.wireFrame.stroke(#888888);
     this.wireFrame.strokeWeight(0.5f);
-     
+ 
 
     for ( float i = -w/2.0f; i< +w/2.0f; i+=tileSize) {
       for ( float j = -h/2.0f; j< +h/2.0f; j+=tileSize) {
@@ -56,11 +56,13 @@ public class Land {
         Map3D.ObjectPoint ptwo = this.map.new ObjectPoint(i+tileSize, j);
         Map3D.ObjectPoint pthree = this.map.new ObjectPoint(i+tileSize, j+tileSize);
         Map3D.ObjectPoint pfour = this.map.new ObjectPoint(i, j+tileSize);
-
+         
         this.wireFrame.vertex(pone.x, pone.y, pone.z);
         this.wireFrame.vertex(ptwo.x, ptwo.y, ptwo.z);
         this.wireFrame.vertex(pthree.x, pthree.y, pthree.z);
         this.wireFrame.vertex(pfour.x, pfour.y, pfour.z);
+     
+        
       }
     }
 
