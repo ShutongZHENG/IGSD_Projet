@@ -1,250 +1,270 @@
-//public class Buildings{
-    
-//    private Map3D map;
-//    private ArrayList<info_building> list_building;
-//    private PShape buildings;
-//     private class info_building{
-//        String fileName;
-//        color building_color;
-//        ArrayList<ArrayList<PVector>> list_maison;
+public class Buildings {
+
+  private Map3D map;
+  private ArrayList<info_building> list_building;
+  private PShape buildings;
+
+
+  private class info_building {
+    String fileName;
+    color building_color;
+    ArrayList<oneBuilding> list_maison;
+
+    info_building(String str, color c) {
+      this.fileName = str;
+      this.building_color = c;
+      this.list_maison = new ArrayList<oneBuilding>();
+    }
+  }
+
+
+  private class oneBuilding {
+    ArrayList<PVector> maisonCord;
+    float top;
+    oneBuilding(ArrayList<PVector> P, float t) {
+      this.top = t;
+      this.maisonCord = P;
+    }
+  }
+
+
+
+
+
+  public Buildings(Map3D m) {
+    this.map = m;
+    list_building = new ArrayList<info_building>();
+    this.buildings= createShape(GROUP);
+  }
+
+  void update() {
+    if (buildings.isVisible())
+      shape(buildings);
+  }
+
+
+  public void add(String str, color c) {
+    info_building oneListbuilding  = new info_building(str, c);
+    info_building listNotopbuilding = new info_building(str, c);
+    File ressource = dataFile(oneListbuilding.fileName);
+    if (!ressource.exists() || ressource.isDirectory()) {
+      println("ERROR: GeoJSON file " + oneListbuilding.fileName + " not found.");
+      return;
+    }
+
+
+    JSONObject geojson = loadJSONObject(oneListbuilding.fileName);
+    if (!geojson.hasKey("type")) {
+      println("WARNING: Invalid GeoJSON file.");
+      return;
+    } else if (!"FeatureCollection".equals(geojson.getString("type", "undefined"))) {
+      println("WARNING: GeoJSON file doesn't contain features collection.");
+      return;
+    }
+    // Parse features
+    JSONArray features = geojson.getJSONArray("features");
+    if (features == null) {
+      println("WARNING: GeoJSON file doesn't contain any feature.");
+      return;
+    }
+  w :
+    for (int f=0; f<features.size(); f++) {
+
+      ArrayList<PVector> path = new ArrayList<PVector>();
+      ArrayList<PVector> noToppath = new ArrayList<PVector>();
+
+      JSONObject feature = features.getJSONObject(f);
+      if (!feature.hasKey("geometry"))
+        break;
+      JSONObject geometry = feature.getJSONObject("geometry");
+      if (!feature.hasKey("properties"))
+        break;
+      JSONObject properties = feature.getJSONObject("properties");
+      switch (geometry.getString("type", "undefined")) {
+      case "Polygon":
+
+        JSONArray coordinates = geometry.getJSONArray("coordinates");
+        int levels = properties.getInt("building:levels", 1);
+        float top = Map3D.heightScale * 3.0f * (float)levels;
+        if (coordinates != null) {
+          JSONArray point = coordinates.getJSONArray(0);
+          // JSONArray point = coordinates.getJSONArray(p);
+          for (int p=0; p < coordinates.getJSONArray(0).size(); p++) {
+            Map3D.GeoPoint gp = this.map.new GeoPoint(point.getJSONArray(p).getDouble(0), point.getJSONArray(p).getDouble(1));
+            //gp.elevation += 5.0d;
+            if (gp.inside() && properties.hasKey("building:levels")) {
+              Map3D.ObjectPoint op = this.map.new ObjectPoint(gp);
+              path.add(op.toVector());
+            } else if (gp.inside() && !properties.hasKey("building:levels")) {
+              Map3D.ObjectPoint op = this.map.new ObjectPoint(gp);
+              noToppath.add(op.toVector());
+            } else {
+              continue w;
+            }
+          }
+        }
+        if (path.size()>2)        
+          oneListbuilding.list_maison.add(new oneBuilding(path, top));
+        if (noToppath.size()<3)
+          continue w;
+        listNotopbuilding.list_maison.add(new oneBuilding(noToppath, Map3D.heightScale * 3.0f*1.f));
+
+
         
-//        info_building(String str, color c) {
-//                this.fileName = str;
-//            this.building_color = c;
-//            this.list_maison = new ArrayList<ArrayList<PVector>>();
-//        }
-//    }
-    
-//    public Buildings(Map3D m) {
-//        this.map = m;
-//        list_building = new ArrayList<info_building>();
+        break;
 
-//        if(this.list_building.size() == 0){
-//             println("ERROR: No building ");
-//             return;
-//        }
-//        this.building = createShape(GROUP);
+      default:
+        println("WARNING: GeoJSON '" + geometry.getString("type", "undefined") + "' geometrytype not handled.");
+        break;
+      }
+    }
+    this.list_building.add(oneListbuilding);
 
-//        for(int i = 0; i < list_building.size(); i++){
-//            File ressource = dataFile(list_building.get(i).fileName);
-//            if (!ressource.exists() || ressource.isDirectory()) {
-//             println("ERROR: GeoJSON file " + fileName + " not found.");
-//            return;
-//         }
+    this.creatBuild(oneListbuilding);
+     this.creatNotopBuild(listNotopbuilding);
+  }
+
+  void creatNotopBuild(info_building B) {
+
+    for (int j =0; j< B.list_maison.size(); j++) {
+      PShape walls;
+      walls = createShape();
+      walls.beginShape(QUAD_STRIP);
+      walls.noStroke();
+      //walls.stroke(B.building_color);
+      walls.fill(B.building_color);
+      //walls.strokeWeight(0.5f);
+
+      PShape roof;
+      roof = createShape();
+      roof.beginShape();
+      roof.noStroke();
+      //roof.stroke(B.building_color);
+      roof.fill(B.building_color);
+     // roof.strokeWeight(0.5f);
+      roof.emissive(0x60);
+
+      //
+      /*
+         a=(y2-y1)(z3-z1)-(z2-z1)(y3-y1)
+       b=(z2-z1)(x3-x1)-(z3-z1)(x2-x1)
+       c=(x2-x1)(y3-y1)-(x3-x1)(y2-y1)
+       */
+
+      PVector vA  =   B.list_maison.get(j).maisonCord.get(0);
+      PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
+      PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
+
+      PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(Map3D.heightScale * 3.0f);
+      for (int k =0; k<B.list_maison.get(j).maisonCord.size(); k++) {
+
+        PVector A = B.list_maison.get(j).maisonCord.get(k);   
+        walls.normal(0.0f, 0.0f, 1.0f);
+        walls.vertex(A.x, A.y, A.z);
+        walls.normal(0.0f, 0.0f, 1.0f);
+        walls.vertex(A.x, A.y, A.z+B.list_maison.get(j).top);
+        roof.normal(0.0f, 0.0f, 1.0f);
+        roof.vertex(A.x, A.y, A.z+B.list_maison.get(j).top);
+        //roof.normal(0.0f, 0.0f, 1.0f);
+        //if (A.z>A.z+normale.z) {
+        //  walls.vertex(A.x-normale.x, A.y-normale.y, A.z-normale.z);
+        //  roof.vertex(A.x-normale.x, A.y-normale.y, A.z-normale.z );
+        //} else {
+        //  walls.vertex(A.x+normale.x, A.y+normale.y, A.z+normale.z);
+        //  roof.vertex(A.x+normale.x, A.y+normale.y, A.z+normale.z);
+        //}
+      }
+      walls.endShape();
+      this.buildings.addChild(walls); 
+     
+      roof.endShape();
+      this.buildings.addChild(roof); 
+
+    }
+  }
 
 
 
 
 
+  void creatBuild(info_building B) {
 
 
 
 
-//        }
+    for (int j =0; j< B.list_maison.size(); j++) {
+
+      PShape walls;
+      walls = createShape();
+      walls.beginShape(QUAD_STRIP);
+      //walls.stroke(B.building_color);
+      walls.fill(B.building_color);
+    //  walls.strokeWeight(0.5f);
+      walls.emissive(0x30);
+      walls.noStroke();
 
 
-//    File ressource = dataFile(fileName);
-//    if (!ressource.exists() || ressource.isDirectory()) {
-//      println("ERROR: GeoJSON file " + fileName + " not found.");
-//      return;
-//    }
+      PVector vA  =   B.list_maison.get(j).maisonCord.get(0);
+      PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
+      PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
+
+      PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(B.list_maison.get(j).top);
 
 
-//    JSONObject geojson = loadJSONObject(fileName);
-//    if (!geojson.hasKey("type")) {
-//      println("WARNING: Invalid GeoJSON file.");
-//      return;
-//    } else if (!"FeatureCollection".equals(geojson.getString("type", "undefined"))) {
-//      println("WARNING: GeoJSON file doesn't contain features collection.");
-//      return;
-//    }
-//    // Parse features
-//    JSONArray features = geojson.getJSONArray("features");
-//    if (features == null) {
-//      println("WARNING: GeoJSON file doesn't contain any feature.");
-//      return;
-//    }
-//    for (int f=0; f<features.size(); f++) {
-//       ArrayList<PVector> path = new ArrayList<PVector>();
-//      JSONObject feature = features.getJSONObject(f);  
-//      if (!feature.hasKey("properties"))
-//        break;
-//      JSONObject properties = feature.getJSONObject("properties");
-//      String laneKind = "unclassified";
-//      color laneColor = 0xFFFF0000;
-//      double laneOffset = 1.50d;
-//      float laneWidth = 0.5f;
-//      // See https://wiki.openstreetmap.org/wiki/Key:highway
-//      laneKind = properties.getString("highway", "unclassified");
-//      if(!laneKind.equals("trunk")){
-//      println("EER");
-//      continue;
-//      }
-           
-//      switch (laneKind) {
-//      case "motorway":
-//        laneColor = 0xFFe990a0;
-//        laneOffset = 3.75d;
-//        laneWidth = 8.0f;
-//        break;
-//      case "trunk":
-//        laneColor = 0xFFfbb29a;
-//        laneOffset = 3.60d;
-//        laneWidth = 7.0f;
-//        break;
-//      case "trunk_link":
-//      case "primary":
-//        laneColor = 0xFFfdd7a1;
-//        laneOffset = 3.45d;
-//        laneWidth = 6.0f;
-//        break;
-//      case "secondary":
-//      case "primary_link":
-//        laneColor = 0xFFf6fabb;
-//        laneOffset = 3.30d;
-//        laneWidth = 5.0f;
-//        break;
-//      case "tertiary":
-//      case "secondary_link":
-//        laneColor = 0xFFE2E5A9;
-//        laneOffset = 3.15d;
-//        laneWidth = 4.0f;
-//        break;
-//      case "tertiary_link":
-//      case "residential":
-//      case "construction":
-//      case "living_street":
-//        laneColor = 0xFFB2B485;
-//        laneOffset = 3.00d;
-//        laneWidth = 3.5f;
-//        break;
-//      case "corridor":
-//      case "cycleway":
-//      case "footway":
-//      case "path":
-//      case "pedestrian":
-//      case "service":
-//      case "steps":
-//      case "track":
-//      case "unclassified":
-//        laneColor = 0xFFcee8B9;
-//        laneOffset = 2.85d;
-//        laneWidth = 1.0f;
-//        break;
-//      default:
-//        laneColor = 0xFFFF0000;
-//        laneOffset = 1.50d;
-//        laneWidth = 0.5f;
-//        println("WARNING: Roads kind not handled : ", laneKind);
-//        break;
-//      }
-//      // Display threshold (increase if more performance needed...)
-//      if (laneWidth < 1.0f)
-//        break;
+      for (int k =0; k<B.list_maison.get(j).maisonCord.size(); k++) {
+        PVector A = B.list_maison.get(j).maisonCord.get(k);
         
-//      if (!feature.hasKey("geometry"))
-//        break;
-//      JSONObject geometry = feature.getJSONObject("geometry");
-//      switch (geometry.getString("type", "undefined")) {
-//      case "LineString":
-
-//        JSONArray coordinates = geometry.getJSONArray("coordinates");
-//        if (coordinates != null)
-//          for (int p=0; p < coordinates.size(); p++) {
-//            JSONArray point = coordinates.getJSONArray(p);
-//            Map3D.GeoPoint gp = this.map.new GeoPoint(point.getDouble(0), point.getDouble(1));
-//            if (gp.inside()) {
-//              gp.elevation += laneOffset;
-//              Map3D.ObjectPoint op = this.map.new ObjectPoint(gp);
-//              path.add(op.toVector());
-//            }
-//          }
-//        list_path.add( new lane(laneColor, laneWidth, path) );
-//        break;
-
-//      default:
-//        println("WARNING: GeoJSON '" + geometry.getString("type", "undefined") + "' geometrytype not handled.");
-//        break;
-//      }
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    }
-    
-//    public void add(String str, color c) {
-//        list_building.add(new info_building(str,c));
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-//}
+        walls.normal(0.0f, 0.0f, 1.0f);
+        walls.vertex(A.x, A.y, A.z);
+        walls.normal(0.0f, 0.0f, 1.0f);
+        walls.vertex(A.x, A.y, A.z+B.list_maison.get(j).top);
+      //  if (A.z>A.z+normale.z) {
+      //    walls.vertex(A.x-normale.x, A.y-normale.y, A.z-normale.z);
+      //  } else {
+      //    walls.vertex(A.x+normale.x, A.y+normale.y, A.z+normale.z);
+      //  }
+      }
+      walls.endShape();
+      this.buildings.addChild(walls); 
+     
+    }
+
+
+
+
+    //roof
+  
+    for (int j =0; j< B.list_maison.size(); j++) {
+      PShape roof;
+      roof = createShape();
+      roof.beginShape();
+      roof.noStroke();
+      //roof.stroke(B.building_color);
+      roof.fill(B.building_color);
+      //roof.strokeWeight(0.5f);
+      roof.emissive(0x60);
+      PVector vA  =   B.list_maison.get(j).maisonCord.get(0);
+      PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
+      PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
+      PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(B.list_maison.get(j).top);
+      for (int k =0; k<B.list_maison.get(j).maisonCord.size(); k++) {
+        PVector A = B.list_maison.get(j).maisonCord.get(k);
+
+        roof.normal(0.0f, 0.0f, 1.0f);
+        roof.vertex(A.x, A.y, A.z+B.list_maison.get(j).top);
+        //if (A.z>A.z+normale.z) {
+        //  roof.vertex(A.x-normale.x, A.y-normale.y, A.z-normale.z);
+        //} else {
+        //  roof.vertex(A.x+normale.x, A.y+normale.y, A.z+normale.z);
+        //}
+      }
+      roof.endShape();
+      this.buildings.addChild(roof); 
+      
+    }
+  }
+
+  void toggle() {
+    this.buildings.setVisible(!this.buildings.isVisible());
+  }
+}

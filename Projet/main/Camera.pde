@@ -24,13 +24,14 @@ public class Camera {
   }
 
   public void update() {
-    camera(this.x, -this.y, this.z, 0, 0, 0, 0, 0, -1);
+     camera(this.x, -this.y, this.z, 0, 0, 0, 0, 0, -1);
     // Sunny vertical lightning 
-    ambientLight(0x7F, 0x7F, 0x7F); 
+    ambientLight(0xAA, 0xAA, 0xAA); 
     if (lightning)
     directionalLight(0xA0, 0xA0, 0x60, 0, 0, -1);
     lightFalloff(0.0f, 0.0f, 1.0f);
     lightSpecular(0.0f, 0.0f, 0.0f);
+    
   }
 
   public  void adjustRadius(float offset) {

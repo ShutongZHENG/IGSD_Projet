@@ -80,9 +80,8 @@ public class Railways {
 
       PShape lane = createShape();
       lane.beginShape(QUAD_STRIP);
-      lane.stroke(0xFFFFFFFF);
-      lane.fill(0xFFFFFFFF);
-      println("i: "+i +" Size: "+list_path.get(i).size());
+      lane.noStroke();
+      lane.fill(255,255,255);
       boolean isgetBefore = false;
       for (int j=1; j <list_path.get(i).size(); j++) {
         if (j ==1 ) {
@@ -91,19 +90,19 @@ public class Railways {
           for (int n=0; n<list_path.size(); n++) {
             if (n == i)
               continue;
-            if (list_path.get(n).get(0).x == A.x) {
+            if (list_path.get(n).get(0).x == A.x && list_path.get(n).get(0).y == A.y) {
               A = list_path.get(n).get(1);  
               B = list_path.get(i).get(j-1);
               isgetBefore = true;
               break;
-            } else if (list_path.get(n).get(list_path.get(n).size()-1).x == A.x) {
+            } else if (list_path.get(n).get(list_path.get(n).size()-1).x == A.x && list_path.get(n).get(list_path.get(n).size()-1).y == A.y) {
               A = list_path.get(n).get(list_path.get(n).size()-2);  
               B = list_path.get(i).get(j-1);
               isgetBefore = true;
               break;
             }
           }
-          if (isgetBefore) {
+          if (isgetBefore  ) {
             PVector Va = new PVector(A.y - B.y, B.x - A.x).normalize().mult(laneWidth/2.0f);
             Va = new PVector(A.y - B.y, B.x - A.x).normalize().mult(laneWidth/2.0f);
             lane.normal(0.0f, 0.0f, 1.0f);

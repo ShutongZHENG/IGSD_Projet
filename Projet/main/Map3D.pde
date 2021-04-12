@@ -74,7 +74,7 @@ public class Map3D {
     this.data = loadBytes(fileName);
     
     // Force flat projection if false (for debug purposes)
-    this.mode3D = false;
+    this.mode3D = true;
 
   }
 

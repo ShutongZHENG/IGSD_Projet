@@ -157,8 +157,17 @@ public class Roads {
     }
 
 
-    for( ArrayList<lane> L : list_path.values() )
-    drawMap(L);
+    for( ArrayList<lane> L : list_path.values() ){
+        drawMap(L);
+    }
+    //for debug
+    //for(Map.Entry<String, ArrayList<lane>> entry : list_path.entrySet()){
+    //   // println(entry.getKey());
+    //    drawMap(entry.getValue());
+    
+    //}
+    
+    
   }
 
   void update() {
@@ -171,25 +180,25 @@ public class Roads {
   }
 
   void drawMap(ArrayList<lane> L) {
-    
+   
     for (int i =0; i<L.size(); i++) {
       float laneWidth = L.get(i).laneWidth;
       PShape lane = createShape();
       lane.beginShape(QUAD_STRIP);
       lane.stroke(L.get(i).laneColor);
       lane.fill(L.get(i).laneColor);
-      lane.strokeWeight(2.0f);
+      lane.strokeWeight(1.75f);
+      lane.noStroke();
       boolean isgetBefore = false;
       for (int j=1; j<L.get(i).Vop.size(); j++) {
-        println(L.get(i).Vop.get(j));
+     
         if (j ==1 ) {
           PVector A = L.get(i).Vop.get(j-1);      
           PVector B = L.get(i).Vop.get(j);       
           for (int n=0; n<L.size(); n++) {
-            println("i ", i, " n ", n);
             if (n == i)
               continue;
-            if (L.get(n).Vop.get(L.get(n).Vop.size()-1).x == A.x) {
+            if (L.get(n).Vop.get(L.get(n).Vop.size()-1).x == A.x && L.get(n).Vop.get(L.get(n).Vop.size()-1).y == A.y) {
               A = L.get(n).Vop.get(L.get(n).Vop.size()-2);  
               B = L.get(i).Vop.get(j-1);
               isgetBefore = true;

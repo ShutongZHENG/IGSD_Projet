@@ -100,10 +100,10 @@ public class Gpx { //<>// //<>// //<>//
     for (int i = 1; i < list_pTrack.size(); i++) {
       Map3D.GeoPoint gp = this.map.new GeoPoint(list_pTrack.get(i-1).x, list_pTrack.get(i-1).y);
       Map3D.ObjectPoint op = this.map.new ObjectPoint(gp);
-      this.track.vertex(op.x, op.y, op.z);
+      this.track.vertex(op.x, op.y, op.z+5);
       gp = this.map.new GeoPoint(list_pTrack.get(i).x, list_pTrack.get(i).y);
       op = this.map.new ObjectPoint(gp);
-      this.track.vertex(op.x, op.y, op.z);
+      this.track.vertex(op.x, op.y, op.z+5);
     }
     this.track.endShape();
 
