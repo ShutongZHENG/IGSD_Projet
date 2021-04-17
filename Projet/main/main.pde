@@ -22,7 +22,7 @@ void setup() {
   this.gpx = new Gpx(this.map, "trail.geojson" );
   this.railways = new Railways(this.map, "railways.geojson");
   this.roads = new Roads(this.map, "roads.geojson");
-  
+
   this.poi.drawShape();
   smooth(8);
   frameRate(60);
@@ -54,7 +54,7 @@ void draw() {
     this.buildings.update();
     this.poi.update();
     hud.update(m_camera);
-    
+   
   }
 }
 
@@ -111,12 +111,15 @@ void keyPressed() {
       m_camera.adjustRadius(-250.);
 
       break;
-
+    case 'A':
+    case 'a':
+      this.land.toggle();
+      break;
     case 'w':
     case 'W':
       // Hide/Show grid & Gizmo
       //this.workspace.toggle();
-      this.land.toggle();
+      this.land.wireFrame.setVisible(!this.land.wireFrame.isVisible());
       break;
     case 'L':
     case 'l':

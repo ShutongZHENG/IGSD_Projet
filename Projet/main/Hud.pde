@@ -11,8 +11,7 @@ public class Hud {
     g.hint(PConstants.DISABLE_DEPTH_TEST);
     g.resetMatrix();
     g.applyMatrix(this.hud);
-    
-}
+  }
   private void end() {
     g.hint(PConstants.ENABLE_DEPTH_TEST);
     g.popMatrix();
@@ -39,21 +38,50 @@ public class Hud {
     textMode(SHAPE);
     textSize(20);
     textAlign(CENTER, TOP);
-    text("Camera",100,10);
+    text("Camera", 100, 10);
     textSize(16);
     textAlign(LEFT, CENTER);
     text("Longitude     ", 15, 50);
     text("Latitude      ", 15, 75);
     text("Radius        ", 15, 100);
-     textAlign(RIGHT, CENTER);
-    text(String.valueOf(camera.getLongitude())+"°",205,50);
-    text(String.valueOf(camera.getColatitude())+"°",205,75);
-    text(String.valueOf(camera.getRaduis())+" m",205,100);
+
+    textAlign(RIGHT, CENTER);
+    text(String.valueOf(camera.getLongitude())+"°", 205, 50);
+    text(String.valueOf(90-camera.getColatitude())+"°", 205, 75);
+    text(String.valueOf(camera.getRaduis())+" m", 205, 100);
+
+
+
+    noStroke();
+    fill(96);
+    rectMode(CORNER);
+    rect(width-220, 10, 200, 160, 5, 5, 5, 5); // Value
+    fill(0xF0);
+    textMode(SHAPE);
+    textSize(20);
+    textAlign(CENTER, TOP);
+    text("Camera", 100, 10);
+    textSize(16);
+    textAlign(LEFT, CENTER);
+    text("wireFrame -- W", width-210, 25);
+    text("Land -- A", width-210, 50);
+    text("Lightning -- L", width-210, 75);
+    text("Roads -- R", width-210, 100);
+    text("Gpx -- X ", width-210, 125);
+    text("Buildings -- B ", width-210, 150);
+
+    textAlign(RIGHT, CENTER);
+    text(String.valueOf(land.wireFrame.isVisible()), width-25, 25);
+    text(String.valueOf(land.satellite.isVisible()), width-25, 50);
+    text(String.valueOf(m_camera.lightning), width-25, 75);
+    text(String.valueOf(railways.railways.isVisible()), width-25, 100);
+    text(String.valueOf(gpx.track.isVisible()), width-25, 125);
+    text(String.valueOf(buildings.buildings.isVisible()), width-25, 150);
   }
-  public void update(Camera c){
-  this.begin();
-  this.displayFPS();
-  this.displayCamera(c);
-  this.end();
+  public void update(Camera c) {
+    this.begin();
+    this.displayFPS();
+    this.displayCamera(c);
+    this.end();
   }
 }

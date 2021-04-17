@@ -28,7 +28,7 @@ public class Land {
     this.shadow.beginShape(QUADS);
     this.shadow.fill(0x992F2F2F);
     this.shadow.noStroke();
-     
+
 
     Map3D.ObjectPoint onw = this.map.new ObjectPoint(-w/2.0f, -h/2.0f);
     Map3D.ObjectPoint osw = this.map.new ObjectPoint(-w/2.0f, +h/2.0f);
@@ -45,7 +45,7 @@ public class Land {
     this.wireFrame.noFill();
     this.wireFrame.stroke(#888888);
     this.wireFrame.strokeWeight(0.5f);
- 
+
 
     for ( float i = -w/2.0f; i< +w/2.0f; i+=tileSize) {
       for ( float j = -h/2.0f; j< +h/2.0f; j+=tileSize) {
@@ -56,13 +56,11 @@ public class Land {
         Map3D.ObjectPoint ptwo = this.map.new ObjectPoint(i+tileSize, j);
         Map3D.ObjectPoint pthree = this.map.new ObjectPoint(i+tileSize, j+tileSize);
         Map3D.ObjectPoint pfour = this.map.new ObjectPoint(i, j+tileSize);
-         
+
         this.wireFrame.vertex(pone.x, pone.y, pone.z);
         this.wireFrame.vertex(ptwo.x, ptwo.y, ptwo.z);
         this.wireFrame.vertex(pthree.x, pthree.y, pthree.z);
         this.wireFrame.vertex(pfour.x, pfour.y, pfour.z);
-     
-        
       }
     }
 
@@ -75,7 +73,7 @@ public class Land {
     this.satellite.texture(uvmap);
     this.satellite.noStroke();
     this.satellite.emissive(0xD0);
-     
+
     for ( float i = -w/2.0f; i< +w/2.0f; i+=tileSize) {
       for ( float j = -h/2.0f; j< +h/2.0f; j+=tileSize) {
 
@@ -85,25 +83,22 @@ public class Land {
         PVector n = op.toNormal();
         this.satellite.normal(n.x, n.y, n.z);
         this.satellite.vertex(op.x, op.y, op.z, (i+w/2.0f)*uvmap.width/w, (j+h/2.0f)*uvmap.height/h);
-        
+
         Map3D.ObjectPoint op2 = this.map.new ObjectPoint(i+tileSize, j);
         PVector n2 = op2.toNormal();
         this.satellite.normal(n2.x, n2.y, n2.z);
         this.satellite.vertex(op2.x, op2.y, op2.z, ((i+w/2.0f)+tileSize)*uvmap.width/w, (j+h/2.0f)*uvmap.height/h);
-        
-         Map3D.ObjectPoint op3 = this.map.new ObjectPoint(i+tileSize, j+tileSize);
-         PVector n3 = op3.toNormal();
+
+        Map3D.ObjectPoint op3 = this.map.new ObjectPoint(i+tileSize, j+tileSize);
+        PVector n3 = op3.toNormal();
         this.satellite.normal(n3.x, n3.y, n3.z);
         this.satellite.vertex(op3.x, op3.y, op3.z, ((i+w/2.0f)+tileSize)*uvmap.width/w, ((j+h/2.0f)+tileSize)*uvmap.height/h);
-        
-         Map3D.ObjectPoint op4 = this.map.new ObjectPoint(i, j+tileSize);
-         PVector n4 = op4.toNormal();
+
+        Map3D.ObjectPoint op4 = this.map.new ObjectPoint(i, j+tileSize);
+        PVector n4 = op4.toNormal();
         this.satellite.normal(n4.x, n4.y, n4.z);
         this.satellite.vertex(op4.x, op4.y, op4.z, (i+w/2.0f)*uvmap.width/w, ((j+h/2.0f)+tileSize)*uvmap.height/h);
-
-      
-    
-  }
+      }
     }
 
 
@@ -128,7 +123,7 @@ public class Land {
   }
 
   void toggle() {
-    this.wireFrame.setVisible(!this.wireFrame.isVisible());
     this.satellite.setVisible(!this.satellite.isVisible());
+
   }
 }

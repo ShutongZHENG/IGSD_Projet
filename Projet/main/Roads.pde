@@ -137,7 +137,7 @@ public class Roads {
             }
           }
         if (path.isEmpty() || path.size() ==1)
-          continue;
+          break;
         if(list_path.containsKey(laneKind)){
             ArrayList<lane> L = list_path.get(laneKind);
             L.add(new lane(laneColor, laneWidth, path));
@@ -158,6 +158,7 @@ public class Roads {
 
 
     for( ArrayList<lane> L : list_path.values() ){
+      
         drawMap(L);
     }
     //for debug
@@ -179,6 +180,56 @@ public class Roads {
     this.roads.setVisible(!this.roads.isVisible());
   }
 
+  //void drawMap(ArrayList<lane> L) {
+   
+  //  for (int i =0; i<L.size(); i++) {
+  //    float laneWidth = L.get(i).laneWidth;
+  //    PShape lane = createShape();
+  //    lane.beginShape(QUAD_STRIP);
+  //    lane.stroke(L.get(i).laneColor);
+  //    lane.fill(L.get(i).laneColor);
+  //    lane.strokeWeight(1.75f);
+  //    lane.noStroke();
+  //    boolean isgetBefore = false;
+  //    for (int j=1; j<L.get(i).Vop.size(); j++) {
+     
+  //      if (j ==1 ) {
+  //        PVector A = L.get(i).Vop.get(j-1);      
+  //        PVector B = L.get(i).Vop.get(j);       
+  //        for (int n=0; n<L.size(); n++) {
+  //          if (n == i)
+  //            continue;
+  //          if (L.get(n).Vop.get(L.get(n).Vop.size()-1).x == A.x && L.get(n).Vop.get(L.get(n).Vop.size()-1).y == A.y) {
+  //            A = L.get(n).Vop.get(L.get(n).Vop.size()-2);  
+  //            B = L.get(i).Vop.get(j-1);
+  //            isgetBefore = true;
+  //            break;
+  //          }
+  //        }
+
+  //        if (isgetBefore) {
+  //          PVector Va = new PVector(A.y - B.y, B.x - A.x).normalize().mult(laneWidth/2.0f);
+  //          Va = new PVector(A.y - B.y, B.x - A.x).normalize().mult(laneWidth/2.0f);
+  //          lane.normal(0.0f, 0.0f, 1.0f);
+  //          lane.vertex(A.x - Va.x, A.y - Va.y, A.z);
+  //          lane.normal(0.0f, 0.0f, 1.0f);
+  //          lane.vertex(A.x + Va.x, A.y + Va.y, A.z);
+  //        }
+  //      }
+  //      PVector A = L.get(i).Vop.get(j-1);      
+  //      PVector B = L.get(i).Vop.get(j);
+  //      PVector Va = new PVector(A.y - B.y, B.x - A.x).normalize().mult(laneWidth/2.0f);
+  //      lane.normal(0.0f, 0.0f, 1.0f);
+  //      lane.vertex(A.x - Va.x, A.y - Va.y, A.z);
+  //      lane.normal(0.0f, 0.0f, 1.0f);
+  //      lane.vertex(A.x + Va.x, A.y + Va.y, A.z);
+  //    }
+  //    lane.endShape();
+  //    this.roads.addChild(lane);
+  //  }
+  //}
+  
+  
   void drawMap(ArrayList<lane> L) {
    
     for (int i =0; i<L.size(); i++) {
@@ -189,32 +240,9 @@ public class Roads {
       lane.fill(L.get(i).laneColor);
       lane.strokeWeight(1.75f);
       lane.noStroke();
-      boolean isgetBefore = false;
       for (int j=1; j<L.get(i).Vop.size(); j++) {
      
-        if (j ==1 ) {
-          PVector A = L.get(i).Vop.get(j-1);      
-          PVector B = L.get(i).Vop.get(j);       
-          for (int n=0; n<L.size(); n++) {
-            if (n == i)
-              continue;
-            if (L.get(n).Vop.get(L.get(n).Vop.size()-1).x == A.x && L.get(n).Vop.get(L.get(n).Vop.size()-1).y == A.y) {
-              A = L.get(n).Vop.get(L.get(n).Vop.size()-2);  
-              B = L.get(i).Vop.get(j-1);
-              isgetBefore = true;
-              break;
-            }
-          }
 
-          if (isgetBefore) {
-            PVector Va = new PVector(A.y - B.y, B.x - A.x).normalize().mult(laneWidth/2.0f);
-            Va = new PVector(A.y - B.y, B.x - A.x).normalize().mult(laneWidth/2.0f);
-            lane.normal(0.0f, 0.0f, 1.0f);
-            lane.vertex(A.x - Va.x, A.y - Va.y, A.z);
-            lane.normal(0.0f, 0.0f, 1.0f);
-            lane.vertex(A.x + Va.x, A.y + Va.y, A.z);
-          }
-        }
         PVector A = L.get(i).Vop.get(j-1);      
         PVector B = L.get(i).Vop.get(j);
         PVector Va = new PVector(A.y - B.y, B.x - A.x).normalize().mult(laneWidth/2.0f);
@@ -222,9 +250,118 @@ public class Roads {
         lane.vertex(A.x - Va.x, A.y - Va.y, A.z);
         lane.normal(0.0f, 0.0f, 1.0f);
         lane.vertex(A.x + Va.x, A.y + Va.y, A.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B.x - Va.x, B.y - Va.y, B.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B.x + Va.x, B.y + Va.y, B.z);
       }
       lane.endShape();
       this.roads.addChild(lane);
+      
     }
+    
+    
+    
+      for (int i =0; i<L.size(); i++) {
+      float laneWidth = L.get(i).laneWidth;
+      PShape lane = createShape();
+      lane.beginShape(QUAD_STRIP);
+      lane.stroke(L.get(i).laneColor);
+      lane.fill(L.get(i).laneColor);
+      lane.strokeWeight(1.75f);
+      lane.noStroke();
+      PVector A = L.get(i).Vop.get(0);
+      for (int j=0; j<L.size(); j++) {
+        if(i == j)
+        continue;
+        
+        PVector B_1 = L.get(j).Vop.get(0);
+        PVector B_2 = L.get(j).Vop.get(L.get(j).Vop.size()-1);
+        if(B_1.x == A.x && B_1.y == A.y){
+           B_1 = L.get(j).Vop.get(1);
+        PVector Va = new PVector(A.y - B_1.y, B_1.x - A.x).normalize().mult(laneWidth/2.0f);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(A.x - Va.x, A.y - Va.y, A.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(A.x + Va.x, A.y + Va.y, A.z);
+        
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B_1.x - Va.x, B_1.y - Va.y, B_1.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B_1.x + Va.x, B_1.y + Va.y, B_1.z);
+        
+        }
+        else if (B_2.x == A.x && B_2.y == A.y){
+          B_2 = L.get(j).Vop.get(L.get(j).Vop.size()-2);
+        PVector Va = new PVector(A.y - B_2.y, B_2.x - A.x).normalize().mult(laneWidth/2.0f);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(A.x - Va.x, A.y - Va.y, A.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(A.x + Va.x, A.y + Va.y, A.z);
+        
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B_2.x - Va.x, B_2.y - Va.y, B_2.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B_2.x + Va.x, B_2.y + Va.y, B_2.z);
+        
+        }
+
+        
+      }
+      lane.endShape();
+      this.roads.addChild(lane);
+      
+      lane = createShape();
+      lane.beginShape(QUAD_STRIP);
+      lane.stroke(L.get(i).laneColor);
+      lane.fill(L.get(i).laneColor);
+      lane.strokeWeight(1.75f);
+      lane.noStroke();
+       A = L.get(i).Vop.get(L.get(i).Vop.size()-1);
+      for (int j=0; j<L.size(); j++) {
+        if(i == j)
+        continue;
+        
+        PVector B_1 = L.get(j).Vop.get(0);
+        PVector B_2 = L.get(j).Vop.get(L.get(j).Vop.size()-1);
+        if(B_1.x == A.x && B_1.y == A.y){
+           B_1 = L.get(j).Vop.get(1);
+        PVector Va = new PVector(A.y - B_1.y, B_1.x - A.x).normalize().mult(laneWidth/2.0f);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(A.x - Va.x, A.y - Va.y, A.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(A.x + Va.x, A.y + Va.y, A.z);
+        
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B_1.x - Va.x, B_1.y - Va.y, B_1.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B_1.x + Va.x, B_1.y + Va.y, B_1.z);
+        
+        }
+        else if (B_2.x == A.x && B_2.y == A.y){
+          B_2 = L.get(j).Vop.get(L.get(j).Vop.size()-2);
+        PVector Va = new PVector(A.y - B_2.y, B_2.x - A.x).normalize().mult(laneWidth/2.0f);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(A.x - Va.x, A.y - Va.y, A.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(A.x + Va.x, A.y + Va.y, A.z);
+        
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B_2.x - Va.x, B_2.y - Va.y, B_2.z);
+        lane.normal(0.0f, 0.0f, 1.0f);
+        lane.vertex(B_2.x + Va.x, B_2.y + Va.y, B_2.z);
+        
+        }
+
+        
+      }
+      lane.endShape();
+      this.roads.addChild(lane);
+      
+      
+    
+  
+}
+    
   }
 }
