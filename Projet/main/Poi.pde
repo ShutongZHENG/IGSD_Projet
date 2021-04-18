@@ -11,28 +11,28 @@ public class Poi {
     this.map = m;
     this.heat = loadShader("heatVert.glsl","heatFrag.glsl");
   }
-  public void getPoints(String fileName) {
+  public Map<String, ArrayList<PVector>>  getPoints(String fileName) {
     this.fileName = fileName;
     File ressource = dataFile(fileName);
     if (!ressource.exists() || ressource.isDirectory()) {
       println("ERROR: GeoJSON file " + fileName + " not found.");
-      return;
+      return null;
     }
 
 
     JSONObject geojson = loadJSONObject(this.fileName);
     if (!geojson.hasKey("type")) {
       println("WARNING: Invalid GeoJSON file.");
-      return;
+      return null;
     } else if (!"FeatureCollection".equals(geojson.getString("type", "undefined"))) {
       println("WARNING: GeoJSON file doesn't contain features collection.");
-      return;
+      return null;
     }
     // Parse features
     JSONArray features = geojson.getJSONArray("features");
     if (features == null) {
       println("WARNING: GeoJSON file doesn't contain any feature.");
-      return;
+      return null;
     }
 
     for (int f=0; f<features.size(); f++) {
@@ -119,6 +119,8 @@ public class Poi {
         break;
       }
     }
+    
+    return listHeat;
   }
 
   void drawShape() {
@@ -128,41 +130,43 @@ public class Poi {
     float tileSize = 25.0f;
     float w = (float)Map3D.width;
     float h = (float)Map3D.height;
-    //this.land = createShape();
-    //this.land.beginShape(POINTS);
+    this.land = createShape();
+    this.land.beginShape(POINTS);
 
-    //for ( float i = -w/2.0f; i< +w/2.0f; i+=tileSize) {
-    //  for ( float j = -h/2.0f; j< +h/2.0f; j+=tileSize) {
+    for ( float i = -w/2.0f; i< +w/2.0f; i+=tileSize) {
+        for ( float j = -h/2.0f; j< +h/2.0f; j+=tileSize) {
 
-    //    Map3D.ObjectPoint pone = this.map.new ObjectPoint(i, j);
+        Map3D.ObjectPoint pone = this.map.new ObjectPoint(i, j);
     //    // calculer dist() ---> ParkingDistance
 
-    //    float Dis_pone = abs(dist(pone.x, pone.y, pone.z, listHeat.get("bicycle_parking").get(0).x, listHeat.get("bicycle_parking").get(0).y, listHeat.get("bicycle_parking").get(0).z) );
-    //    for (int a =1; a < listHeat.get("bicycle_parking").size(); a++) {
-    //      float A = abs(dist(pone.x, pone.y, pone.z, listHeat.get("bicycle_parking").get(a).x, listHeat.get("bicycle_parking").get(a).y, listHeat.get("bicycle_parking").get(a).z) );
-    //      if (A<Dis_pone) {
-    //        Dis_pone = A;
-    //      }
-    //    }
-    //    float nearestBykeParkingDistance = Dis_pone;
+        float Dis_pone = abs(dist(pone.x, pone.y, pone.z, listHeat.get("bicycle_parking").get(0).x, listHeat.get("bicycle_parking").get(0).y, listHeat.get("bicycle_parking").get(0).z) );
+        for (int a =1; a < listHeat.get("bicycle_parking").size(); a++) {
+          float A = abs(dist(pone.x, pone.y, pone.z, listHeat.get("bicycle_parking").get(a).x, listHeat.get("bicycle_parking").get(a).y, listHeat.get("bicycle_parking").get(a).z) );
+          if (A<Dis_pone) {
+            Dis_pone = A;
+          }
+        }
+        float nearestBykeParkingDistance = Dis_pone;
 
-    //    //calculer dis_ picnic_table
-    //    Dis_pone = abs(dist(pone.x, pone.y, pone.z, listHeat.get("picnic_table").get(0).x, listHeat.get("picnic_table").get(0).y, listHeat.get("picnic_table").get(0).z) );
-    //    for (int a =1; a < listHeat.get("picnic_table").size(); a++) {
-    //      float A = abs(dist(pone.x, pone.y, pone.z, listHeat.get("picnic_table").get(a).x, listHeat.get("picnic_table").get(a).y, listHeat.get("picnic_table").get(a).z) );
-    //      if (A<Dis_pone) {
-    //        Dis_pone = A;
-    //      }
-    //    }
-    //    float nearestPicNicTableDistance = Dis_pone;
+        //calculer dis_ picnic_table
+        Dis_pone = abs(dist(pone.x, pone.y, pone.z, listHeat.get("picnic_table").get(0).x, listHeat.get("picnic_table").get(0).y, listHeat.get("picnic_table").get(0).z) );
+        for (int a =1; a < listHeat.get("picnic_table").size(); a++) {
+          float A = abs(dist(pone.x, pone.y, pone.z, listHeat.get("picnic_table").get(a).x, listHeat.get("picnic_table").get(a).y, listHeat.get("picnic_table").get(a).z) );
+          if (A<Dis_pone) {
+            Dis_pone = A;
+          }
+        }
+        float nearestPicNicTableDistance = Dis_pone;
 
-    //    this.land.attrib("heat", nearestBykeParkingDistance, nearestPicNicTableDistance);
+        this.land.attrib("heat", nearestBykeParkingDistance, nearestPicNicTableDistance);
 
-    //    this.land.vertex(pone.x, pone.y, pone.y);
-    //  }
-    //}
+        this.land.vertex(pone.x, pone.y, pone.z);
+     }
+    }
 
-    //this.land.endShape();
+    this.land.endShape();
+  
+    
   }
 
 
@@ -170,7 +174,7 @@ public class Poi {
 
 
   void update() {
-    
-   // shape(land);
+    shader(this.heat);
+    shape(land);
   }
 }

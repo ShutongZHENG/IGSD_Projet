@@ -11,7 +11,7 @@ smooth in vec2 vertHeat;
 
 void main() {
   gl_FragColor = texture2D(texture, vertTexCoord.st) * vertColor;
-  gl_FragColor.r=vertHeat[0];
-  gl_FragColor.g=vertHeat[1];
-  gl_FragColor.b =0;
+  gl_FragColor.r=vertHeat[0]/100;
+  gl_FragColor.g=vertHeat[1]/100;
+  gl_FragColor.b = 0;
 }

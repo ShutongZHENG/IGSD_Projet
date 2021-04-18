@@ -151,11 +151,11 @@ public class Buildings {
        c=(x2-x1)(y3-y1)-(x3-x1)(y2-y1)
        */
 
-      PVector vA  =   B.list_maison.get(j).maisonCord.get(0);
-      PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
-      PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
+      //PVector vA  =   B.list_maison.get(j).maisonCord.get(0);
+      //PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
+      //PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
 
-      PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(Map3D.heightScale * 3.0f);
+      //PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(Map3D.heightScale * 3.0f);
       for (int k =0; k<B.list_maison.get(j).maisonCord.size(); k++) {
 
         PVector A = B.list_maison.get(j).maisonCord.get(k);   
@@ -204,11 +204,11 @@ public class Buildings {
       walls.noStroke();
 
 
-      PVector vA  =   B.list_maison.get(j).maisonCord.get(0);
-      PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
-      PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
+      //PVector vA  =   B.list_maison.get(j).maisonCord.get(0);
+      //PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
+      //PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
 
-      PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(B.list_maison.get(j).top);
+  //    PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(B.list_maison.get(j).top);
 
 
       for (int k =0; k<B.list_maison.get(j).maisonCord.size(); k++) {
@@ -243,10 +243,10 @@ public class Buildings {
       roof.fill(B.building_color);
       //roof.strokeWeight(0.5f);
       roof.emissive(0x60);
-      PVector vA  =   B.list_maison.get(j).maisonCord.get(0);
-      PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
-      PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
-      PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(B.list_maison.get(j).top);
+      //PVector vA  =   B.list_maison.get(j).maisonCord.get(0);
+      //PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
+      //PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
+      //PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(B.list_maison.get(j).top);
       for (int k =0; k<B.list_maison.get(j).maisonCord.size(); k++) {
         PVector A = B.list_maison.get(j).maisonCord.get(k);
 
