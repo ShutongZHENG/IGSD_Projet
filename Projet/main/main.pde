@@ -11,7 +11,8 @@ Poi poi;
 boolean ready;
 void setup() {
   this.ready = false;
-  fullScreen(P3D);
+ // fullScreen(P3D);
+ size(1000,1000,P3D);
   this.map = new Map3D("paris_saclay.data");
   this.poi = new Poi(this.map);
   this.poi.getPoints("heatmap_1.geojson");
@@ -46,13 +47,15 @@ void draw() {
   } else {
 
     m_camera.update();
-    this.gpx.update(m_camera);
+       
+
     this.workspace.update();
     this.railways.update();
     this.roads.update();
     land.update();
-    this.buildings.update();
     this.poi.update();
+    this.buildings.update();
+    this.gpx.update(m_camera);
     hud.update(m_camera);
    
   }
@@ -139,6 +142,12 @@ void keyPressed() {
     case 'b':
     case 'B':
       this.buildings.toggle();
+      break;
+      
+      
+      case 'h':
+    case 'H':
+      this.poi.toggle();
       break;
     }
   }

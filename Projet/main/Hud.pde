@@ -55,7 +55,7 @@ public class Hud {
     noStroke();
     fill(96);
     rectMode(CORNER);
-    rect(width-220, 10, 200, 160, 5, 5, 5, 5); // Value
+    rect(width-220, 10, 200, 185, 5, 5, 5, 5); // Value
     fill(0xF0);
     textMode(SHAPE);
     textSize(20);
@@ -69,7 +69,7 @@ public class Hud {
     text("Roads -- R", width-210, 100);
     text("Gpx -- X ", width-210, 125);
     text("Buildings -- B ", width-210, 150);
-
+    text("HeatMap -- H ", width-210, 175);
     textAlign(RIGHT, CENTER);
     text(String.valueOf(land.wireFrame.isVisible()), width-25, 25);
     text(String.valueOf(land.satellite.isVisible()), width-25, 50);
@@ -77,6 +77,7 @@ public class Hud {
     text(String.valueOf(railways.railways.isVisible()), width-25, 100);
     text(String.valueOf(gpx.track.isVisible()), width-25, 125);
     text(String.valueOf(buildings.buildings.isVisible()), width-25, 150);
+    text(String.valueOf(poi.land.isVisible()), width-25, 175);
   }
   public void update(Camera c) {
     this.begin();

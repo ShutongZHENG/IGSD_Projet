@@ -1,4 +1,4 @@
-public class Gpx {  //<>//
+public class Gpx {  //<>// //<>//
   private Map3D map;
   private String fileName;
   private PShape track; // beginshape lines
@@ -123,12 +123,13 @@ public class Gpx {  //<>//
 
 
     this.thumbtacks = createShape();
-    this.thumbtacks.beginShape(POINTS);
+    this.thumbtacks.beginShape(LINES);
     this.thumbtacks.stroke(0xFFFF3F3F);
     this.thumbtacks.strokeWeight(10.f);
     for (pWaypoint pwp : list_pWaypoint) {
       Map3D.GeoPoint gp = this.map.new GeoPoint(pwp.x, pwp.y);
       Map3D.ObjectPoint op = this.map.new ObjectPoint(gp);
+      this.thumbtacks.vertex(op.x, op.y, op.z+100.);
       this.thumbtacks.vertex(op.x, op.y, op.z+100.);
     }
     this.thumbtacks.endShape();

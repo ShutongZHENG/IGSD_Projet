@@ -9,7 +9,7 @@ public class Poi {
   Poi(Map3D m ) {
     listHeat = new HashMap<String, ArrayList<PVector>>();
     this.map = m;
-    this.heat = loadShader("heatVert.glsl","heatFrag.glsl");
+    this.heat = loadShader("heatFrag.glsl","heatVert.glsl");
   }
   public Map<String, ArrayList<PVector>>  getPoints(String fileName) {
     this.fileName = fileName;
@@ -108,7 +108,7 @@ public class Poi {
               P.add(path);
               listHeat.put("picnic_table", P);
             }
-            println("picnic_table", path);
+            //println("picnic_table", path);
             break;
           }
         }
@@ -127,16 +127,21 @@ public class Poi {
 
 
 
-    float tileSize = 25.0f;
+    float tileSize = 10f;
     float w = (float)Map3D.width;
     float h = (float)Map3D.height;
-    this.land = createShape();
-    this.land.beginShape(POINTS);
-
+    println(w,"   ",h);
+    this.land = createShape(GROUP);
     for ( float i = -w/2.0f; i< +w/2.0f; i+=tileSize) {
         for ( float j = -h/2.0f; j< +h/2.0f; j+=tileSize) {
-
+        PShape p;
+        p = createShape();
+        p.beginShape(QUADS);
+        p.noStroke();
         Map3D.ObjectPoint pone = this.map.new ObjectPoint(i, j);
+        Map3D.ObjectPoint ptwo = this.map.new ObjectPoint(i, j+tileSize);
+        Map3D.ObjectPoint pthree = this.map.new ObjectPoint(i+tileSize, j);
+        Map3D.ObjectPoint pfour = this.map.new ObjectPoint(i+tileSize, j+tileSize);
     //    // calculer dist() ---> ParkingDistance
 
         float Dis_pone = abs(dist(pone.x, pone.y, pone.z, listHeat.get("bicycle_parking").get(0).x, listHeat.get("bicycle_parking").get(0).y, listHeat.get("bicycle_parking").get(0).z) );
@@ -146,10 +151,19 @@ public class Poi {
             Dis_pone = A;
           }
         }
-        float nearestBykeParkingDistance = Dis_pone;
 
+        
+        float nearestBykeParkingDistance = Dis_pone;
+   //    println("nearestBykeParkingDistance x : y ",pone.x," " ,pone.y);
         //calculer dis_ picnic_table
-        Dis_pone = abs(dist(pone.x, pone.y, pone.z, listHeat.get("picnic_table").get(0).x, listHeat.get("picnic_table").get(0).y, listHeat.get("picnic_table").get(0).z) );
+        
+         Dis_pone = abs(dist(pone.x, pone.y, pone.z, listHeat.get("picnic_table").get(0).x, listHeat.get("picnic_table").get(0).y, listHeat.get("picnic_table").get(0).z) );
+          for (int a =1; a < listHeat.get("bench").size(); a++) {
+          float A = abs(dist(pone.x, pone.y, pone.z, listHeat.get("bench").get(a).x, listHeat.get("bench").get(a).y, listHeat.get("bench").get(a).z) );
+          if (A<Dis_pone) {
+            Dis_pone = A;
+          }
+        }
         for (int a =1; a < listHeat.get("picnic_table").size(); a++) {
           float A = abs(dist(pone.x, pone.y, pone.z, listHeat.get("picnic_table").get(a).x, listHeat.get("picnic_table").get(a).y, listHeat.get("picnic_table").get(a).z) );
           if (A<Dis_pone) {
@@ -157,14 +171,30 @@ public class Poi {
           }
         }
         float nearestPicNicTableDistance = Dis_pone;
-
-        this.land.attrib("heat", nearestBykeParkingDistance, nearestPicNicTableDistance);
-
-        this.land.vertex(pone.x, pone.y, pone.z);
+       //println("nearestPicNicTableDistance x : y ",pone.x," " ,pone.y);
+       //println("a : b" ,nearestBykeParkingDistance,nearestPicNicTableDistance, "COS --->", cos(nearestBykeParkingDistance/1000/2*3.1415926));
+        p.attrib("heat", nearestBykeParkingDistance, nearestPicNicTableDistance);
+        
+        
+        
+        p.vertex(pone.x, pone.y, pone.z+5.);
+        
+        p.vertex(ptwo.x, ptwo.y, ptwo.z+5.);
+        
+        
+        p.vertex(pfour.x, pfour.y, pfour.z+5.);
+        p.vertex(pthree.x, pthree.y, pthree.z+5.);
+        
+        //p.vertex(pfour.x, pfour.y, pfour.z);
+        
+        
+        p.endShape();
+        this.land.addChild(p);
+        
      }
     }
 
-    this.land.endShape();
+   // this.land.endShape();
   
     
   }
@@ -173,8 +203,19 @@ public class Poi {
 
 
 
+
+
   void update() {
-    shader(this.heat);
-    shape(land);
+if(this.land.isVisible()){
+  shader(this.heat);
+  this.heat.set("u_time",float(millis())/500.0 );
+  shape(land);
+  resetShader();
+}
+  }
+  
+  void toggle() {
+    this.land.setVisible(!this.land.isVisible());
+
   }
 }

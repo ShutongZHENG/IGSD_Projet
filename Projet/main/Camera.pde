@@ -6,7 +6,7 @@ public class Camera {
   private float y;
   private float z;
   private final float min_rayon = width*0.5;
-  private final float max_rayon = width*3.0;
+  private final float max_rayon = width*3.0*2;
   private final float min_longitude = -3*PI/2;
   private final float max_longitude = PI/2;
   private final double min_colatitude = 0.001;
