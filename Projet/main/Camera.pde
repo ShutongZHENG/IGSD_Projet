@@ -13,6 +13,8 @@ public class Camera {
   private final float max_colatitude = PI/2;
   private boolean lightning;
 
+
+  //Initialiser la classe de caméra
   Camera(float r, float l, float c) {
     this.rayon = r;
     this.longitude = l;
@@ -23,18 +25,20 @@ public class Camera {
     this.lightning = false;
   }
 
+  // Afficher la caméra
   public void update() {
-     camera(this.x, -this.y, this.z, 0, 0, 0, 0, 0, -1);
+    camera(this.x, -this.y, this.z, 0, 0, 0, 0, 0, -1);
     // Sunny vertical lightning 
     ambientLight(0xAA, 0xAA, 0xAA); 
     if (lightning)
-    directionalLight(0xA0, 0xA0, 0x60, 0, 0, -1);
+      directionalLight(0xA0, 0xA0, 0x60, 0, 0, -1);
     lightFalloff(0.0f, 0.0f, 1.0f);
     lightSpecular(0.0f, 0.0f, 0.0f);
-    
   }
 
-  public  void adjustRadius(float offset) {
+
+  //ajouter radius 
+  public void adjustRadius(float offset) {
     float res = this.rayon + offset;
     if (res < min_rayon) {
       this.rayon = min_rayon;
@@ -48,6 +52,7 @@ public class Camera {
     this.z=this.rayon*cos(this.colatitude);
   }
 
+  //ajouter longitude
   public void adjustLongitude(float delta) {
     float res = this.longitude + delta;
     if (res < this.min_longitude) {
@@ -62,6 +67,7 @@ public class Camera {
     this.z=this.rayon*cos(this.colatitude);
   }
 
+  // ajouter colatitude
   public void adjustColatitude(float delat) {
     float res = this.colatitude + delat;
 
@@ -78,21 +84,24 @@ public class Camera {
     this.z=this.rayon*cos(this.colatitude);
   }
 
+  // retour raduis
   public int getRaduis() {
 
     return (int)this.rayon;
   }
 
+  // retour longitude
   public int getLongitude() {
 
     return (int)(180*this.longitude/PI);
   }
 
+  // retour colatitude
   public int getColatitude() {
 
     return (int)(180*this.colatitude/PI);
   }
-
+  //Contrôler l'affichage lumineux
   public void toggle() {
     this.lightning = !this.lightning;
   }

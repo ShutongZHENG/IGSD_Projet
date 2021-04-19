@@ -28,6 +28,8 @@ public class Hud {
     textAlign(CENTER, CENTER);
     text(String.valueOf((int)frameRate) + " fps", 40, height-20);
   }
+
+  //Afficher l'emplacement de la caméra et l'état des différentes fonctions dans la barre de fonctions
   private void displayCamera(Camera camera) {
     // Bottom left area
     noStroke();

@@ -28,7 +28,7 @@ public class Gpx {  //<>// //<>//
   private ArrayList<pTrack> list_pTrack = new ArrayList<pTrack>();
   private ArrayList<pWaypoint> list_pWaypoint = new ArrayList<pWaypoint>();
   Gpx(Map3D m, String s ) {
-    
+
     this.isclic = false;
     this.map = m;
     this.fileName = s;
@@ -67,7 +67,7 @@ public class Gpx {  //<>// //<>//
         if (coordinates != null)
           for (int p=0; p < coordinates.size(); p++) {
             JSONArray point = coordinates.getJSONArray(p);
-           
+
             list_pTrack.add(new pTrack(point.getDouble(0), point.getDouble(1)));
           }
         break;
@@ -79,7 +79,7 @@ public class Gpx {  //<>// //<>//
           if (feature.hasKey("properties")) {
             description = feature.getJSONObject("properties").getString("desc", description);
           }
-         
+
           list_pWaypoint.add(new pWaypoint(point.getDouble(0), point.getDouble(1), description));
         }
         break;
@@ -123,13 +123,12 @@ public class Gpx {  //<>// //<>//
 
 
     this.thumbtacks = createShape();
-    this.thumbtacks.beginShape(LINES);
+    this.thumbtacks.beginShape(POINTS);
     this.thumbtacks.stroke(0xFFFF3F3F);
     this.thumbtacks.strokeWeight(10.f);
     for (pWaypoint pwp : list_pWaypoint) {
       Map3D.GeoPoint gp = this.map.new GeoPoint(pwp.x, pwp.y);
       Map3D.ObjectPoint op = this.map.new ObjectPoint(gp);
-      this.thumbtacks.vertex(op.x, op.y, op.z+100.);
       this.thumbtacks.vertex(op.x, op.y, op.z+100.);
     }
     this.thumbtacks.endShape();
@@ -158,6 +157,7 @@ public class Gpx {  //<>// //<>//
     this.thumbtacks.setVisible(!this.thumbtacks.isVisible());
   }
 
+  //changer la couleur du point de navigation après avoir cliqué
   public void clic(int x, int y) {
     int p;
     this.isclic = false;
@@ -179,6 +179,7 @@ public class Gpx {  //<>// //<>//
     this.hit = this.thumbtacks.getVertex(this.s);
   }
 
+  //Afficher le nom du point de navigation
   private void displayPointName(Camera camera, PVector hit, int s) {
 
     pushMatrix();

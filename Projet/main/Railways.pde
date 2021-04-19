@@ -5,6 +5,8 @@ public class Railways {
   private PShape railways;
 
   private ArrayList<ArrayList<PVector>> list_path = new ArrayList<ArrayList<PVector>>();
+
+  //Initialiser la classe et effectuer le stockage des données et le dessin graphique
   Railways(Map3D m, String s) {
     this.map = m;
     this.fileName = s;
@@ -74,14 +76,14 @@ public class Railways {
     //  }
     //}
     //);
-    
+
     float laneWidth = 4.0f;
     for (int i =0; i<list_path.size(); i++) {
 
       PShape lane = createShape();
       lane.beginShape(QUAD_STRIP);
       lane.noStroke();
-      lane.fill(255,255,255);
+      lane.fill(255, 255, 255);
       boolean isgetBefore = false;
       for (int j=1; j <list_path.get(i).size(); j++) {
         if (j ==1 ) {

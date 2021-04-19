@@ -124,6 +124,5 @@ public class Land {
 
   void toggle() {
     this.satellite.setVisible(!this.satellite.isVisible());
-
   }
 }

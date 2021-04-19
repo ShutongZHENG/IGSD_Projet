@@ -9,10 +9,12 @@ Roads roads;
 Buildings buildings;
 Poi poi;
 boolean ready;
+
+// Initialiser les variables, charger les données cartographiques
 void setup() {
   this.ready = false;
   fullScreen(P3D);
- //size(1000,1000,P3D);
+  //size(1000,1000,P3D);
   this.map = new Map3D("paris_saclay.data");
   this.poi = new Poi(this.map);
   this.poi.getPoints("heatmap_1.geojson");
@@ -46,7 +48,7 @@ void draw() {
   } else {
 
     m_camera.update();
-       
+
 
     this.workspace.update();
     this.railways.update();
@@ -56,11 +58,11 @@ void draw() {
     this.buildings.update();
     this.gpx.update(m_camera);
     hud.update(m_camera);
-   
   }
 }
 
 
+//Multithreading   Charger les données cartographiques
 void prepare() {
   try { 
     Thread.sleep(1000);
@@ -78,6 +80,9 @@ void prepare() {
   this.poi.drawShape();
   this.ready = true;
 }
+
+
+//touche de raccourci pour Contrôler l'affichage de la carte et la position de la caméra
 void keyPressed() {
 
   if (key == CODED) {
@@ -143,9 +148,9 @@ void keyPressed() {
     case 'B':
       this.buildings.toggle();
       break;
-      
-      
-      case 'h':
+
+
+    case 'h':
     case 'H':
       this.poi.toggle();
       break;
@@ -153,12 +158,15 @@ void keyPressed() {
   }
 }
 
+
+//Utilisez la molette de la souris pour contrôler la distance de la caméra
 void mouseWheel(MouseEvent event) {
   float ec = event.getCount();
 
   m_camera.adjustRadius(-250. * ec);
 }
 
+//Utilisez la souris pour contrôler la position de la caméra
 void mouseDragged() {
   if (mouseButton == CENTER) {
     // Camera Horizontal
@@ -172,6 +180,7 @@ void mouseDragged() {
   }
 }
 
+//Afficher le point de navigation
 void mousePressed() {
   if (mouseButton == LEFT)
     this.gpx.clic(mouseX, mouseY);
