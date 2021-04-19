@@ -205,7 +205,7 @@ public class Poi {
 
 
 
-  void update() {
+void update() {
 if(this.land.isVisible()){
   shader(this.heat);
   this.heat.set("u_time",float(millis())/500.0 );

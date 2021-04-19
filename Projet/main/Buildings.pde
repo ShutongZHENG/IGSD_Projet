@@ -160,11 +160,11 @@ public class Buildings {
 
         PVector A = B.list_maison.get(j).maisonCord.get(k);   
         walls.normal(0.0f, 0.0f, 1.0f);
-        walls.vertex(A.x, A.y, A.z);
+        walls.vertex(A.x, A.y, A.z+3.);
         walls.normal(0.0f, 0.0f, 1.0f);
-        walls.vertex(A.x, A.y, A.z+B.list_maison.get(j).top);
+        walls.vertex(A.x, A.y, A.z+B.list_maison.get(j).top+3.);
         roof.normal(0.0f, 0.0f, 1.0f);
-        roof.vertex(A.x, A.y, A.z+B.list_maison.get(j).top);
+        roof.vertex(A.x, A.y, A.z+B.list_maison.get(j).top+3.);
         //roof.normal(0.0f, 0.0f, 1.0f);
         //if (A.z>A.z+normale.z) {
         //  walls.vertex(A.x-normale.x, A.y-normale.y, A.z-normale.z);
@@ -210,14 +210,14 @@ public class Buildings {
 
   //    PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(B.list_maison.get(j).top);
 
-
+      
       for (int k =0; k<B.list_maison.get(j).maisonCord.size(); k++) {
         PVector A = B.list_maison.get(j).maisonCord.get(k);
         
         walls.normal(0.0f, 0.0f, 1.0f);
-        walls.vertex(A.x, A.y, A.z);
+        walls.vertex(A.x, A.y, A.z+3.);
         walls.normal(0.0f, 0.0f, 1.0f);
-        walls.vertex(A.x, A.y, A.z+B.list_maison.get(j).top);
+        walls.vertex(A.x, A.y, A.z+3.+B.list_maison.get(j).top);
       //  if (A.z>A.z+normale.z) {
       //    walls.vertex(A.x-normale.x, A.y-normale.y, A.z-normale.z);
       //  } else {
@@ -247,11 +247,14 @@ public class Buildings {
       //PVector vB  =   B.list_maison.get(j).maisonCord.get(1);
       //PVector vC  =   B.list_maison.get(j).maisonCord.get(2);
       //PVector  normale = new PVector((vB.y-vA.y)*(vC.z-vA.z)-(vB.z-vA.z)*(vC.y-vA.y), (vB.z-vA.z)*(vC.x-vA.x)-(vC.z-vA.z)*(vB.x-vA.x), (vB.x-vA.x)*(vC.y-vA.y)-(vC.x-vA.x)*(vB.y-vA.y)).normalize().mult(B.list_maison.get(j).top);
+      
+      
       for (int k =0; k<B.list_maison.get(j).maisonCord.size(); k++) {
         PVector A = B.list_maison.get(j).maisonCord.get(k);
 
+
         roof.normal(0.0f, 0.0f, 1.0f);
-        roof.vertex(A.x, A.y, A.z+B.list_maison.get(j).top);
+        roof.vertex(A.x, A.y, A.z+B.list_maison.get(j).top+3.);
         //if (A.z>A.z+normale.z) {
         //  roof.vertex(A.x-normale.x, A.y-normale.y, A.z-normale.z);
         //} else {
